@@ -86,7 +86,6 @@ body{
 
 #uv-index{
     padding:5px;
-    background-color:green;
     color:white;
     border-radius:5px;
 }
@@ -106,3 +105,23 @@ body{
     padding-bottom:10px;
 }
 
+/* UV Index Scale Colors (Official EPA colors and ranges) */
+/* Low 0 1 2 */
+.uv-low{background-color:#299501;}
+.uv-low::after{content: " - Low";}
+
+/* Moderate 3 4 5 */
+.uv-moderate{background-color:#f7e401;}
+.uv-moderate::after{content: " - Moderate"}
+
+/* High 6 7 */
+.uv-high{background-color:#f95901;}
+.uv-high::after{content: " - High"}
+
+/* Very High 8 9 10 */
+.uv-very-high{background-color:#d90011;}
+.uv-very-high::after{content: " - Very High"}
+
+/* Extreme 11+ */
+.uv-extreme{background-color:#6c49c9;}
+.uv-extreme::after{content: " - Extreme"}
