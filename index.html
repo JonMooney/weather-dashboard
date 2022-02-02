@@ -20,19 +20,87 @@
         </div>
 
         <div class="row mt-3">
-            <div class="col-3">
+            <div class="col-md-12 col-lg-4">
                 <form id="search-form">
-                    <label for="city-search">Search for a City:</label>
-                    <input id="city-search" type="text">
-                    <input type="submit">
+                    <h3>Search for a City:</h3>
+                    <input id="city-search" type="text" placeholder="Enter a city name">
+                    <input type="submit" value="Search">
                 </form>
 
                 <div class="div-divider"></div>
+
+                <div class="prev-city">
+                    Austin
+                </div>
                 
             </div>
 
-            <div class="col-9">
-                Main content
+            <div class="col-md-12 col-lg-8">
+                <div class="main-card">
+                    <h2><span id="city">Sacramento</span> (<span id="todays-date">2/2/2022</span>)</h2>
+                    <ul>
+                        <li><strong>Temp: </strong><span id="temp">74 F</span></li>
+                        <li><strong>Wind: </strong><span id="wind">6 MPH</span></li>
+                        <li><strong>Humidity: </strong><span id="humidity">48%</span></li>
+                        <li><strong>UV Index: </strong><span id="uv-index">0.47</span></li>
+                    </ul>
+                </div>
+
+                <h3 class="mt-3">5-Day Forecast</h3>
+
+                <div class="row">
+                    <div class="col-md-6 col-lg-4 mt-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 id="day1-title" class="card-title">2/2/2022</h5>
+                                <p class="card-text">
+                                    <ul>
+                                        <li><span id="day1-symbol">a</span></li>
+                                        <li>Temp: <span id="day1-temp">47F</span></li>
+                                        <li>Wind: <span id="day1-wind">45MPH</span></li>
+                                        <li>Humidity: <span id="day1-humidity">45%</span></li>
+                                    </ul>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-4 mt-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Special title treatment</h5>
+                                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4 mt-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Special title treatment</h5>
+                                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4 mt-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Special title treatment</h5>
+                                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4 mt-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Special title treatment</h5>
+                                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
