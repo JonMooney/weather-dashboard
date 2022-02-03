@@ -74,7 +74,7 @@ function getCityData(lat, lon){
             // Load weather data for today
             document.getElementById("city").innerHTML = cityName;
             document.getElementById("todays-date").textContent = weekday + ", " + newDate;
-            document.getElementById("icon").innerHTML = "<img src='http://openweathermap.org/img/wn/" + data.current.weather[0].icon + ".png'>"
+            document.getElementById("icon").innerHTML = "<img src='https://openweathermap.org/img/wn/" + data.current.weather[0].icon + ".png'>"
             document.getElementById("temp").textContent = data.current.temp;
             document.getElementById("wind").textContent = data.current.wind_speed;
             document.getElementById("humidity").textContent = data.current.humidity;
