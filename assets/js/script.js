@@ -9,6 +9,8 @@ var cityList = [];
 
 function getCoordinates(city){
     // Use Open Weather API to convert City Name into Lattitude and Longitude
+    if(city === ""){return;}
+
     var apiUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=5&appid=" + apiKey;
 
     fetch(apiUrl)
@@ -18,7 +20,6 @@ function getCoordinates(city){
         response.json().then(function(data) {
             //Check to see if we have a valid response
             if(data.length === 0){
-                console.log(data.length);
                 document.getElementById("warning").style.display = "block";
                 document.getElementById("main-content").style.visibility = "hidden";
                 document.getElementById("city-search").value = "";
@@ -58,8 +59,8 @@ function getCoordinates(city){
 
 function getCityData(lat, lon){
     var date = new Date();
-
     var newDate = (date.getMonth()+1) + "-" + date.getDate() + "-" + date.getFullYear();
+    var weekday = date.toLocaleDateString("en-US", {weekday: 'long'});
 
     // Use Open Weather API width lattitude and longitude values to pull weather data
     var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=imperial&exclude=hourly,minutely,alerts&appid=" + apiKey;
@@ -71,8 +72,8 @@ function getCityData(lat, lon){
         response.json().then(function(data) {
 
             // Load weather data for today
-            document.getElementById("city").textContent = cityName;
-            document.getElementById("todays-date").textContent = newDate;
+            document.getElementById("city").innerHTML = cityName;
+            document.getElementById("todays-date").textContent = weekday + ", " + newDate;
             document.getElementById("icon").innerHTML = "<img src='http://openweathermap.org/img/wn/" + data.current.weather[0].icon + ".png'>"
             document.getElementById("temp").textContent = data.current.temp;
             document.getElementById("wind").textContent = data.current.wind_speed;
@@ -94,8 +95,12 @@ function getCityData(lat, lon){
 
             // Load weather data for 5-day forecast
             for(var a=0;a<5;a++){
-                newDate = (date.getMonth()+1) + "-" + (date.getDate()+(a+1)) + "-" + date.getFullYear();
-                document.getElementById("day" + a + "-date").textContent = newDate;
+                date = new Date();
+                date.setDate(date.getDate() + (a+1));
+                weekday = date.toLocaleDateString("en-US", {weekday: 'long'});
+
+                newDate = (date.getMonth()+1) + "-" + date.getDate() + "-" + date.getFullYear();
+                document.getElementById("day" + a + "-date").innerHTML = weekday + "<br>" + newDate;
                 document.getElementById("day" + a + "-symbol").innerHTML = "<img src='http://openweathermap.org/img/wn/" + data.daily[a].weather[0].icon + ".png'>"
                 document.getElementById("day" + a + "-temp").textContent = data.daily[a].temp.max;
                 document.getElementById("day" + a + "-wind").textContent = data.daily[a].wind_speed;
@@ -134,8 +139,9 @@ function storeCity(city){
 
     var cityItem = document.createElement("div");
     cityItem.className = "prev-city";
-    cityItem.textContent = city;
-    cityItem.id = "history-" + cityList.length-1;
+    //cityItem.textContent = city;
+    cityItem.innerHTML = city + "<i class='bi bi-trash'></i>"
+    //cityItem.id = "history-" + cityList.length-1;
 
     historyEl.appendChild(cityItem);
 
@@ -150,8 +156,9 @@ function getCities(){
         for(var a=0;a<storedCities.length;a++){
             var cityItem = document.createElement("div");
             cityItem.className = "prev-city";
-            cityItem.textContent = storedCities[a];
-            cityItem.id = "history-" + storedCities.length-1;
+            //cityItem.textContent = storedCities[a];
+            cityItem.innerHTML = storedCities[a] + "<i class='bi bi-trash'></i>"
+            //cityItem.id = "history-" + storedCities.length-1;
             historyEl.appendChild(cityItem);
         }
 
@@ -159,14 +166,41 @@ function getCities(){
     }
 }
 
+function removeItem(city){
+    for(var a=0;a<cityList.length;a++){
+        if(cityList[a] === city){
+            cityList.splice(a, 1);
+            console.log(cityList);
+            break;
+        }
+    }
+
+    var historyEl = document.getElementsByClassName("prev-city");
+
+    for(var a=0;a<historyEl.length;a++){
+        if(historyEl[a].textContent.indexOf(city) != -1){
+            historyEl[a].remove();
+        }
+    }
+
+    localStorage.setItem("cityList", JSON.stringify(cityList));
+}
+
 getCities();
 
 historyEl.addEventListener("click", function(event){
+    document.getElementById("city-search").value = "";
     getCoordinates(event.target.textContent)
+    
+    // Clicked on trash icon
+    if(event.target.classList.contains("bi")){
+        removeItem(event.target.parentNode.textContent);
+    }
 });
 
 searchForm.addEventListener("submit", function(event){
     event.preventDefault();
     var city = document.getElementById("city-search").value;
+    document.getElementById("city-search").value = "";
     getCoordinates(city);
 });
