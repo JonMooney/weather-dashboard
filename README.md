@@ -1,7 +1,7 @@
 # Weather Dashboard
 
 ## Description
-This weather dashboard allows an end user to view the weeather for a given city by entering a city name in the search area. It pulls up weather data for the current day, as well as a 5 day forecast. It stores your search history so you can easily find weather data for your favorite cities. You can also delete the cities you no longer need weather data for.
+This weather dashboard allows an end user to view the weather for a given city by entering a city name in the search area. It pulls up weather data for the current day, as well as a 5 day forecast. It stores your search history so you can easily find weather data for your favorite cities. You can also delete the cities you no longer need weather data for.
 
 This project was a great oppurtunity to practice utilizing server-side APIs to pull data in from a remote location. This particular application utilized two API endpoints in order for the search by city functionality to work.
 
