@@ -45,8 +45,12 @@ function getCityData(lat, lon){
         // request was successful
         if (response.ok) {
         response.json().then(function(data) {
-            console.log(data.current.temp);
+            // Load weather data for today
+            console.log(data);
             document.getElementById("city").textContent = cityName;
+            //Date
+            console.log(data.current.weather[0].icon);
+            document.getElementById("icon").innerHTML = "<img src='http://openweathermap.org/img/wn/" + data.current.weather[0].icon + ".png'>"
             document.getElementById("temp").textContent = data.current.temp;
             document.getElementById("wind").textContent = data.current.wind_speed;
             document.getElementById("humidity").textContent = data.current.humidity;
