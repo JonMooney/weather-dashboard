@@ -2,8 +2,10 @@
 
 var apiKey = "6ae891b7ba18b6d2b520db77dde5fb53";
 var searchForm = document.getElementById("search-form");
+var historyEl = document.getElementById("search-history");
 var cityName = "";
 
+var cityList = [];
 
 function getCoordinates(city){
     // Use Open Weather API to convert City Name into Lattitude and Longitude
@@ -19,6 +21,8 @@ function getCoordinates(city){
                 console.log(data.length);
                 document.getElementById("warning").style.display = "block";
                 document.getElementById("main-content").style.visibility = "hidden";
+                document.getElementById("city-search").value = "";
+                document.getElementById("city-search").focus();
                 return;
             }else{
                 document.getElementById("warning").style.display = "none";
@@ -27,9 +31,18 @@ function getCoordinates(city){
             //Check for U.S City
             for(var a=0;a<data.length;a++){
                 if(data[a].country === "US"){
+                    document.getElementById("warning").style.display = "none";
                     cityName = data[a].name;
+                    
+                    storeCity(cityName);
+                    
                     getCityData(data[a].lat, data[a].lon);
                     break;
+                }else{
+                    document.getElementById("warning").style.display = "block";
+                    document.getElementById("main-content").style.visibility = "hidden";
+                    document.getElementById("city-search").value = "";
+                    document.getElementById("city-search").focus();
                 }
             }
         });
@@ -42,11 +55,11 @@ function getCoordinates(city){
     });   
 }
 
+
 function getCityData(lat, lon){
     var date = new Date();
 
     var newDate = (date.getMonth()+1) + "-" + date.getDate() + "-" + date.getFullYear();
-    //console.log(newdate);
 
     // Use Open Weather API width lattitude and longitude values to pull weather data
     var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=imperial&exclude=hourly,minutely,alerts&appid=" + apiKey;
@@ -56,11 +69,8 @@ function getCityData(lat, lon){
         // request was successful
         if (response.ok) {
         response.json().then(function(data) {
-            console.log(data.length);
-            
 
             // Load weather data for today
-            console.log(data);
             document.getElementById("city").textContent = cityName;
             document.getElementById("todays-date").textContent = newDate;
             document.getElementById("icon").innerHTML = "<img src='http://openweathermap.org/img/wn/" + data.current.weather[0].icon + ".png'>"
@@ -106,6 +116,54 @@ function getCityData(lat, lon){
         console.log ("Error in getting weather data");
     });   
 }
+
+function storeCity(city){
+    var historyEl = document.getElementById("search-history");
+    alreadyAdded = false;
+
+    // Check for duplicate city name, if present, exit function
+    for(var a=0;a<cityList.length;a++){
+        if(cityList[a] === city){
+            alreadyAdded = true;
+            return;
+        }
+    }
+
+    //If no duplicate, continue adding to history and localStorage
+    cityList.push(city);
+
+    var cityItem = document.createElement("div");
+    cityItem.className = "prev-city";
+    cityItem.textContent = city;
+    cityItem.id = "history-" + cityList.length-1;
+
+    historyEl.appendChild(cityItem);
+
+    localStorage.setItem("cityList", JSON.stringify(cityList));
+}
+
+function getCities(){
+    
+    var storedCities = JSON.parse(localStorage.getItem("cityList"));
+
+    if(storedCities){
+        for(var a=0;a<storedCities.length;a++){
+            var cityItem = document.createElement("div");
+            cityItem.className = "prev-city";
+            cityItem.textContent = storedCities[a];
+            cityItem.id = "history-" + storedCities.length-1;
+            historyEl.appendChild(cityItem);
+        }
+
+        cityList = storedCities.slice();
+    }
+}
+
+getCities();
+
+historyEl.addEventListener("click", function(event){
+    getCoordinates(event.target.textContent)
+});
 
 searchForm.addEventListener("submit", function(event){
     event.preventDefault();
