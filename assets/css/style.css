@@ -11,6 +11,9 @@ body{
     font-size:18px;
 }
 
+.show{visibility:visible;}
+.hide{visibility:hidden;}
+
 .header{
     padding:15px;
     color:#FFF;
@@ -91,7 +94,8 @@ body{
 }
 
 .card{
-    background-color:#33475a;
+    /* background-color:#33475a; */
+    background-color:#708bb9;
     color:white;
 }
 
