@@ -7,8 +7,8 @@ var cityName = "";
 
 var cityList = [];
 
+// API endpoint based on a city name, converts to lat/lon data
 function getCoordinates(city){
-    // Use Open Weather API to convert City Name into Lattitude and Longitude
     if(city === ""){return;}
 
     var apiUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=5&appid=" + apiKey;
@@ -56,13 +56,13 @@ function getCoordinates(city){
     });   
 }
 
-
+// API endpoint based on lat/lon data, print results to page
 function getCityData(lat, lon){
     var date = new Date();
     var newDate = (date.getMonth()+1) + "-" + date.getDate() + "-" + date.getFullYear();
     var weekday = date.toLocaleDateString("en-US", {weekday: 'long'});
 
-    // Use Open Weather API width lattitude and longitude values to pull weather data
+    // Use Open Weather API with lattitude and longitude values to pull weather data
     var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=imperial&exclude=hourly,minutely,alerts&appid=" + apiKey;
 
     fetch(apiUrl)
@@ -95,6 +95,7 @@ function getCityData(lat, lon){
 
             // Load weather data for 5-day forecast
             for(var a=0;a<5;a++){
+                // New date object each iteration in order to get the weekday name
                 date = new Date();
                 date.setDate(date.getDate() + (a+1));
                 weekday = date.toLocaleDateString("en-US", {weekday: 'long'});
@@ -108,7 +109,6 @@ function getCityData(lat, lon){
             }
 
             // Show data in main content area (current day and 5-day forecast)
-            
             document.getElementById("main-content").style.visibility = "visible";
         });
         } else {
@@ -122,6 +122,7 @@ function getCityData(lat, lon){
     });   
 }
 
+// Write to history sidebar and localStorage
 function storeCity(city){
     var historyEl = document.getElementById("search-history");
     alreadyAdded = false;
@@ -139,15 +140,14 @@ function storeCity(city){
 
     var cityItem = document.createElement("div");
     cityItem.className = "prev-city";
-    //cityItem.textContent = city;
     cityItem.innerHTML = city + "<i class='bi bi-trash'></i>"
-    //cityItem.id = "history-" + cityList.length-1;
 
     historyEl.appendChild(cityItem);
 
     localStorage.setItem("cityList", JSON.stringify(cityList));
 }
 
+// Pull in cities from localStorage (for sidebar)
 function getCities(){
     
     var storedCities = JSON.parse(localStorage.getItem("cityList"));
@@ -156,9 +156,7 @@ function getCities(){
         for(var a=0;a<storedCities.length;a++){
             var cityItem = document.createElement("div");
             cityItem.className = "prev-city";
-            //cityItem.textContent = storedCities[a];
             cityItem.innerHTML = storedCities[a] + "<i class='bi bi-trash'></i>"
-            //cityItem.id = "history-" + storedCities.length-1;
             historyEl.appendChild(cityItem);
         }
 
@@ -166,6 +164,7 @@ function getCities(){
     }
 }
 
+// Remove item from history sidebar and localStorage
 function removeItem(city){
     for(var a=0;a<cityList.length;a++){
         if(cityList[a] === city){
@@ -188,6 +187,7 @@ function removeItem(city){
 
 getCities();
 
+// Click event for history sidebar, cities, as well as trash icons
 historyEl.addEventListener("click", function(event){
     document.getElementById("city-search").value = "";
     getCoordinates(event.target.textContent)
@@ -198,6 +198,7 @@ historyEl.addEventListener("click", function(event){
     }
 });
 
+// Click event for form submit
 searchForm.addEventListener("submit", function(event){
     event.preventDefault();
     var city = document.getElementById("city-search").value;
