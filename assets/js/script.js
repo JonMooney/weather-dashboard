@@ -102,7 +102,7 @@ function getCityData(lat, lon){
 
                 newDate = (date.getMonth()+1) + "-" + date.getDate() + "-" + date.getFullYear();
                 document.getElementById("day" + a + "-date").innerHTML = weekday + "<br>" + newDate;
-                document.getElementById("day" + a + "-symbol").innerHTML = "<img src='http://openweathermap.org/img/wn/" + data.daily[a].weather[0].icon + ".png'>"
+                document.getElementById("day" + a + "-symbol").innerHTML = "<img src='https://openweathermap.org/img/wn/" + data.daily[a].weather[0].icon + ".png'>"
                 document.getElementById("day" + a + "-temp").textContent = data.daily[a].temp.max;
                 document.getElementById("day" + a + "-wind").textContent = data.daily[a].wind_speed;
                 document.getElementById("day" + a + "-humidity").textContent = data.daily[a].humidity;
