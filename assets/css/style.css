@@ -109,6 +109,12 @@ body{
     padding-bottom:10px;
 }
 
+#warning{
+    width:100%;
+    margin:10px 0;
+    display:none;
+}
+
 /* UV Index Scale Colors (Official EPA colors and ranges) */
 /* Low 0 1 2 */
 .uv-low{background-color:#299501;}

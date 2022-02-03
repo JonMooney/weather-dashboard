@@ -5,9 +5,7 @@ var searchForm = document.getElementById("search-form");
 var cityName = "";
 
 
-function getCoordinates(){
-    var city = document.getElementById("city-search").value;
-    
+function getCoordinates(city){
     // Use Open Weather API to convert City Name into Lattitude and Longitude
     var apiUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=5&appid=" + apiKey;
 
@@ -16,8 +14,17 @@ function getCoordinates(){
         // request was successful
         if (response.ok) {
         response.json().then(function(data) {
+            //Check to see if we have a valid response
+            if(data.length === 0){
+                console.log(data.length);
+                document.getElementById("warning").style.display = "block";
+                document.getElementById("main-content").style.visibility = "hidden";
+                return;
+            }else{
+                document.getElementById("warning").style.display = "none";
+            }
+
             //Check for U.S City
-            console.log(data);
             for(var a=0;a<data.length;a++){
                 if(data[a].country === "US"){
                     cityName = data[a].name;
@@ -49,6 +56,9 @@ function getCityData(lat, lon){
         // request was successful
         if (response.ok) {
         response.json().then(function(data) {
+            console.log(data.length);
+            
+
             // Load weather data for today
             console.log(data);
             document.getElementById("city").textContent = cityName;
@@ -73,7 +83,6 @@ function getCityData(lat, lon){
             // End loading of weather data for today
 
             // Load weather data for 5-day forecast
-
             for(var a=0;a<5;a++){
                 newDate = (date.getMonth()+1) + "-" + (date.getDate()+(a+1)) + "-" + date.getFullYear();
                 document.getElementById("day" + a + "-date").textContent = newDate;
@@ -83,26 +92,23 @@ function getCityData(lat, lon){
                 document.getElementById("day" + a + "-humidity").textContent = data.daily[a].humidity;
             }
 
+            // Show data in main content area (current day and 5-day forecast)
+            
             document.getElementById("main-content").style.visibility = "visible";
         });
         } else {
+            document.getElementById("warning").style.display = "block";
             console.log ("Bad response getting weather data");
         }
     })
     .catch(function(error) {
+        document.getElementById("warning").style.display = "block";
         console.log ("Error in getting weather data");
     });   
-
-
-    //displayWeather();
 }
-
-function displayWeather(data){
-    console.log(data);
-}
-
 
 searchForm.addEventListener("submit", function(event){
     event.preventDefault();
-    getCoordinates();
+    var city = document.getElementById("city-search").value;
+    getCoordinates(city);
 });
