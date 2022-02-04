@@ -140,7 +140,7 @@ function storeCity(city){
 
     var cityItem = document.createElement("div");
     cityItem.className = "prev-city";
-    cityItem.innerHTML = city + "<i class='bi bi-trash'></i>"
+    cityItem.innerHTML = city + "<i class='bi bi-trash' title='Delete city'></i>"
 
     historyEl.appendChild(cityItem);
 
@@ -156,7 +156,7 @@ function getCities(){
         for(var a=0;a<storedCities.length;a++){
             var cityItem = document.createElement("div");
             cityItem.className = "prev-city";
-            cityItem.innerHTML = storedCities[a] + "<i class='bi bi-trash'></i>"
+            cityItem.innerHTML = storedCities[a] + "<i class='bi bi-trash' title='Delete city'></i>"
             historyEl.appendChild(cityItem);
         }
 
